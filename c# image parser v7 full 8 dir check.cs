@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,14 +15,14 @@ namespace ConsoleApplication1
         {
 
 
-            string path = (@"C:\Users\DevUser\Downloads\image.jpg");
+            string path = (@"E:\Programming\C#\ImageProcessing\Input.jpg");
 
 
             //make a new bitmap based on the image path input
             Bitmap img = new Bitmap(path);
 
             //make a multidimensional string array that uses the mininum memory possible
-            string[, ,] pixelarray = new string[img.Width, img.Height, 3];
+            string[,,] pixelarray = new string[img.Width, img.Height, 3];
 
             Console.WriteLine("Image found and contains " + (img.Height * img.Width) + " Pixels");
             Console.WriteLine(img.Width + (" pixels wide and ") + img.Height + (" pixels tall"));
@@ -31,17 +31,18 @@ namespace ConsoleApplication1
             int total = (img.Height * img.Width);
 
 
-            for (int i = 0; i < img.Width;  i++)
+            Console.WriteLine("Processing");
+
+            for (int i = 0; i < img.Width; i++)
             {
-                for (int j = 0; j < img.Height;  j++)
+                for (int j = 0; j < img.Height; j++)
                 {
                     Color pixel = img.GetPixel(i, j);
 
 
 
                     //Console.WriteLine(progress + "% done");
-
-                    Console.WriteLine("on pixel " + ((img.Height * i) + j) + " of " + total);
+                    
 
 
                     //add to array with coords
@@ -70,7 +71,7 @@ namespace ConsoleApplication1
 
             Console.WriteLine("");
             Console.WriteLine("Processing done");
-            Console.WriteLine("Enter 1. to save, Enter 2. to not");
+            Console.WriteLine("Enter 1. to save input image as text array, Enter 2. to not");
             int choice = Convert.ToInt32(Console.ReadLine());
 
             if (choice == 1)
@@ -105,22 +106,19 @@ namespace ConsoleApplication1
                 {
                     Console.WriteLine("Exception: " + e.Message);
                 }
-                finally
-                {
-                    Console.WriteLine("File was saved successfully.");
-                }
-
+                
             }
 
-            int[, ,] ContrastArray = new int[img.Width, img.Height, 1];
+            int[,,] ContrastArray = new int[img.Width, img.Height, 1];
 
-            for (int i = 1; i < img.Width -2; i = i+2)
+            for (int i = 1; i < img.Width - 2; i = i + 2)
             {
-                for (int j = 1; j < img.Height - 2; j= j+2)
+                for (int j = 1; j < img.Height - 2; j = j + 2)
                 {
                     int theshold = 30;
                     //overall brightness not colour change on this one
                     int brightness1 = (Convert.ToInt32(pixelarray[i, j, 0]) + Convert.ToInt32(pixelarray[i, j, 1]) + Convert.ToInt32(pixelarray[i, j, 2]));
+
                     int brightness2 = (Convert.ToInt32(pixelarray[i, j + 1, 0]) + Convert.ToInt32(pixelarray[i, j + 1, 1]) + Convert.ToInt32(pixelarray[i, j + 1, 2]));
                     int total1 = (Math.Abs(brightness1 - brightness2)) / 3;
                     if (total1 > theshold)
@@ -129,7 +127,7 @@ namespace ConsoleApplication1
                         ContrastArray[i, j, 0] = total1;
                     }
 
-                    
+
                     brightness2 = (Convert.ToInt32(pixelarray[i, j - 1, 0]) + Convert.ToInt32(pixelarray[i, j - 1, 1]) + Convert.ToInt32(pixelarray[i, j - 1, 2]));
                     total1 = (Math.Abs(brightness1 - brightness2)) / 3;
                     if (total1 > theshold)
@@ -141,8 +139,8 @@ namespace ConsoleApplication1
                         }
                     }
 
-                   
-                    brightness2 = (Convert.ToInt32(pixelarray[i +1 , j + 1, 0]) + Convert.ToInt32(pixelarray[i+1, j + 1, 1]) + Convert.ToInt32(pixelarray[i+1, j + 1, 2]));
+
+                    brightness2 = (Convert.ToInt32(pixelarray[i + 1, j + 1, 0]) + Convert.ToInt32(pixelarray[i + 1, j + 1, 1]) + Convert.ToInt32(pixelarray[i + 1, j + 1, 2]));
                     total1 = (Math.Abs(brightness1 - brightness2)) / 3;
                     if (total1 > theshold)
                     {
@@ -153,8 +151,8 @@ namespace ConsoleApplication1
                         }
                     }
 
-                    
-                    brightness2 = (Convert.ToInt32(pixelarray[i -1, j - 1, 0]) + Convert.ToInt32(pixelarray[i-1, j - 1, 1]) + Convert.ToInt32(pixelarray[i-1, j - 1, 2]));
+
+                    brightness2 = (Convert.ToInt32(pixelarray[i - 1, j - 1, 0]) + Convert.ToInt32(pixelarray[i - 1, j - 1, 1]) + Convert.ToInt32(pixelarray[i - 1, j - 1, 2]));
                     total1 = (Math.Abs(brightness1 - brightness2)) / 3;
                     if (total1 > theshold)
                     {
@@ -165,8 +163,8 @@ namespace ConsoleApplication1
                         }
                     }
 
-                   
-                    brightness2 = (Convert.ToInt32(pixelarray[i-1, j , 0]) + Convert.ToInt32(pixelarray[i-1, j , 1]) + Convert.ToInt32(pixelarray[i-1, j , 2]));
+
+                    brightness2 = (Convert.ToInt32(pixelarray[i - 1, j, 0]) + Convert.ToInt32(pixelarray[i - 1, j, 1]) + Convert.ToInt32(pixelarray[i - 1, j, 2]));
                     total1 = (Math.Abs(brightness1 - brightness2)) / 3;
                     if (total1 > theshold)
                     {
@@ -177,8 +175,8 @@ namespace ConsoleApplication1
                         }
                     }
 
-                    
-                    brightness2 = (Convert.ToInt32(pixelarray[i-1, j + 1, 0]) + Convert.ToInt32(pixelarray[i-1, j + 1, 1]) + Convert.ToInt32(pixelarray[i-1, j + 1, 2]));
+
+                    brightness2 = (Convert.ToInt32(pixelarray[i - 1, j + 1, 0]) + Convert.ToInt32(pixelarray[i - 1, j + 1, 1]) + Convert.ToInt32(pixelarray[i - 1, j + 1, 2]));
                     total1 = (Math.Abs(brightness1 - brightness2)) / 3;
                     if (total1 > theshold)
                     {
@@ -189,7 +187,7 @@ namespace ConsoleApplication1
                         }
                     }
 
-                    
+
                     brightness2 = (Convert.ToInt32(pixelarray[i + 1, j, 0]) + Convert.ToInt32(pixelarray[i + 1, j, 1]) + Convert.ToInt32(pixelarray[i + 1, j, 2]));
                     total1 = (Math.Abs(brightness1 - brightness2)) / 3;
                     if (total1 > theshold)
@@ -201,8 +199,8 @@ namespace ConsoleApplication1
                         }
                     }
 
-                    
-                    brightness2 = (Convert.ToInt32(pixelarray[i + 1, j-1, 0]) + Convert.ToInt32(pixelarray[i + 1, j-1, 1]) + Convert.ToInt32(pixelarray[i + 1, j-1, 2]));
+
+                    brightness2 = (Convert.ToInt32(pixelarray[i + 1, j - 1, 0]) + Convert.ToInt32(pixelarray[i + 1, j - 1, 1]) + Convert.ToInt32(pixelarray[i + 1, j - 1, 2]));
                     total1 = (Math.Abs(brightness1 - brightness2)) / 3;
                     if (total1 > theshold)
                     {
@@ -270,7 +268,8 @@ namespace ConsoleApplication1
 
 
 
-            Console.ReadKey();
+
+            Console.WriteLine("Processing Contrast");
 
             //can we get a redraw of the image's contrast?
 
@@ -290,21 +289,25 @@ namespace ConsoleApplication1
                             int b = Convert.ToInt32(pixelarray[x, y, 2]);
 
                             brush.Color = Color.FromArgb(255, r, g1, b);
-                            Console.WriteLine("At pixel " + x + "," + y + " brightness is " + brush.Color);
+                            
                             g.FillRectangle(brush, x, y, 1, 1);
                         }
 
                         if (ContrastArray[x, y, 0] == 0)
                         {
                             brush.Color = Color.FromArgb(255, 0, 0, 0);
-                            Console.WriteLine("At pixel " + x + "," + y + " brightness is " + brush.Color);
+                           
                             g.FillRectangle(brush, x, y, 1, 1);
 
                         }
                     }
                 }
             }
-            image.Save(@"C:\Users\DevUser\Downloads\contrast.jpg", ImageFormat.Jpeg);
+
+
+            string SavePath = @"E:\Programming\C#\ImageProcessing\saveImage.jpeg";
+
+            image.Save(SavePath, ImageFormat.Jpeg);
 
             Console.WriteLine("");
             Console.WriteLine("Image generated");
